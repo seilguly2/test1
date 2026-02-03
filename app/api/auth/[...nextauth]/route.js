@@ -10,4 +10,22 @@ const handler = NextAuth({
   ],
 })
 
+export const authOptions = {
+  callbacks: {
+    async session({ session, user, token }) {
+      // DB session
+      if (user) {
+        session.user.id = user.id
+      }
+
+      // JWT session
+      if (token?.sub) {
+        session.user.id = token.sub
+      }
+
+      return session
+    },
+  },
+}
+
 export { handler as GET, handler as POST }
